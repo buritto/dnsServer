@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$PROJECT_DIR$" t="IncludeFlat">
+      <e p="ConsoleApp1" t="IncludeRecursive">
+        <e p="ConsoleApp1.csproj" t="IncludeRecursive" />
+        <e p="DNSFrame" t="Include">
+          <e p="Converter.cs" t="Include" />
+          <e p="DNSFrame.cs" t="Include" />
+          <e p="Header.cs" t="Include" />
+          <e p="QuestionSection.cs" t="Include" />
+          <e p="ResourceRecord.cs" t="Include" />
+        </e>
+        <e p="DNSServer.cs" t="Include" />
+        <e p="Domain.To.Ip.json" t="Include" />
+        <e p="Ip.To.Domain.json" t="Include" />
+        <e p="Logger.cs" t="Include" />
+        <e p="Program.cs" t="Include" />
+        <e p="Responce.cs" t="Include" />
+        <e p="ServerControler.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp2.0" t="Include">
+              <e p="ConsoleApp1.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="server.log" t="Include" />
+      </e>
+      <e p="ConsoleApp1.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+    <e p="$USER_HOME$/.Rider2017.3/system/resharper-host/local/Transient/ReSharperHost/v11/SolutionCaches/_ConsoleApp1.2030473115.00" t="ExcludeRecursive" />
+  </component>
+</project>

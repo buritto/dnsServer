@@ -1,0 +1,10 @@
+/home/ubuntupc/MyProj/DNSServer/ConsoleApp1/ConsoleApp1/bin/Debug/netcoreapp2.0/ConsoleApp1.deps.json
+/home/ubuntupc/MyProj/DNSServer/ConsoleApp1/ConsoleApp1/bin/Debug/netcoreapp2.0/ConsoleApp1.runtimeconfig.json
+/home/ubuntupc/MyProj/DNSServer/ConsoleApp1/ConsoleApp1/bin/Debug/netcoreapp2.0/ConsoleApp1.runtimeconfig.dev.json
+/home/ubuntupc/MyProj/DNSServer/ConsoleApp1/ConsoleApp1/bin/Debug/netcoreapp2.0/ConsoleApp1.dll
+/home/ubuntupc/MyProj/DNSServer/ConsoleApp1/ConsoleApp1/bin/Debug/netcoreapp2.0/ConsoleApp1.pdb
+/home/ubuntupc/MyProj/DNSServer/ConsoleApp1/ConsoleApp1/obj/Debug/netcoreapp2.0/ConsoleApp1.csproj.CoreCompileInputs.cache
+/home/ubuntupc/MyProj/DNSServer/ConsoleApp1/ConsoleApp1/obj/Debug/netcoreapp2.0/ConsoleApp1.AssemblyInfoInputs.cache
+/home/ubuntupc/MyProj/DNSServer/ConsoleApp1/ConsoleApp1/obj/Debug/netcoreapp2.0/ConsoleApp1.AssemblyInfo.cs
+/home/ubuntupc/MyProj/DNSServer/ConsoleApp1/ConsoleApp1/obj/Debug/netcoreapp2.0/ConsoleApp1.dll
+/home/ubuntupc/MyProj/DNSServer/ConsoleApp1/ConsoleApp1/obj/Debug/netcoreapp2.0/ConsoleApp1.pdb
