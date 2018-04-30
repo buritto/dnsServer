@@ -1,0 +1,10 @@
+/home/ubuntupc/MyProj/DNS2.0/DSNServer/DSNServer/bin/Debug/netcoreapp2.0/DSNServer.deps.json
+/home/ubuntupc/MyProj/DNS2.0/DSNServer/DSNServer/bin/Debug/netcoreapp2.0/DSNServer.runtimeconfig.json
+/home/ubuntupc/MyProj/DNS2.0/DSNServer/DSNServer/bin/Debug/netcoreapp2.0/DSNServer.runtimeconfig.dev.json
+/home/ubuntupc/MyProj/DNS2.0/DSNServer/DSNServer/bin/Debug/netcoreapp2.0/DSNServer.dll
+/home/ubuntupc/MyProj/DNS2.0/DSNServer/DSNServer/bin/Debug/netcoreapp2.0/DSNServer.pdb
+/home/ubuntupc/MyProj/DNS2.0/DSNServer/DSNServer/obj/Debug/netcoreapp2.0/DSNServer.csproj.CoreCompileInputs.cache
+/home/ubuntupc/MyProj/DNS2.0/DSNServer/DSNServer/obj/Debug/netcoreapp2.0/DSNServer.AssemblyInfoInputs.cache
+/home/ubuntupc/MyProj/DNS2.0/DSNServer/DSNServer/obj/Debug/netcoreapp2.0/DSNServer.AssemblyInfo.cs
+/home/ubuntupc/MyProj/DNS2.0/DSNServer/DSNServer/obj/Debug/netcoreapp2.0/DSNServer.dll
+/home/ubuntupc/MyProj/DNS2.0/DSNServer/DSNServer/obj/Debug/netcoreapp2.0/DSNServer.pdb
