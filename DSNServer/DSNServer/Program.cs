@@ -7,12 +7,8 @@ namespace DSNServer
     {
         static void Main(string[] args)
         {
-            var server = new Server("10.113.226.187");
-            var handler1 = new AQueryHandler(server.MainSocket);
-            var handler2 = new NSQueryHandler(server.MainSocket);
-            server.Subscribe(handler1);
-            server.Subscribe(handler2);
-            server.Listen();
+            Controller.CreateServer("192.168.0.105");
+            Controller.StartServer();
         }
     }
 }

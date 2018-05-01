@@ -1,25 +1,36 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading;
 using DSNServer.Converter;
+using Newtonsoft.Json;
 
 namespace DSNServer.Handlers
 {
-    public class Pair
+    public class Pair : ICashe
     {
         public List<Record> Answer;
         public List<Record> Additional;
-        
+        public long Ttl { get; set; }
+
         public Pair(List<Record> answer, List<Record> additional)
         {
+            Ttl = Int64.MaxValue;
             Answer = answer;
             Additional = additional;
+            foreach (var record in answer)
+            {
+                Ttl = Math.Min(Ttl, record.Ttl);
+            }
+
+            foreach (var record in additional)
+            {
+                Ttl = Math.Min(Ttl, record.Ttl);
+            }
         }
     }
     
@@ -27,10 +38,11 @@ namespace DSNServer.Handlers
     {
         public ConcurrentDictionary<string, Pair> Cashe;
         
-        public NSQueryHandler(Socket server) 
+        public NSQueryHandler(Socket server, ConcurrentDictionary<string, Pair> cashe = null) 
             : base(server, 2)
         {
-            Cashe = new ConcurrentDictionary<string, Pair>();
+            Cashe = GetCahseFromJsone<Pair>("NSQeury.json") 
+                    ?? new ConcurrentDictionary<string, Pair>();
         }
 
         protected override async void ResolveQuestion(DNSFrame frame, EndPoint sender)
@@ -55,7 +67,6 @@ namespace DSNServer.Handlers
             newFrame.Question = new Resource();
             newFrame.Question.LenghtResource = question.LengthRecord;
             newFrame.Question.Records = new List<Record>(){question};
-            
             newFrame.FrameHeader = frame.FrameHeader;
             newFrame.FrameHeader.FrameFlags.isResponse = true;
             newFrame.Answer = new Resource {Records = answer.Answer};
@@ -104,6 +115,16 @@ namespace DSNServer.Handlers
             result.Add(0);
             return result;
         }
+
+        public void HelpResolveResponse(DNSFrame frame)
+        {
+            var newDns = new DNSFrame();
+            newDns.Answer = frame.Authority;
+            newDns.Additional = frame.Additional;
+            newDns.data = frame.data;
+            newDns.Question = frame.Question;
+            ResolveResponse(newDns);
+        }
         
         protected override void ResolveResponse(DNSFrame frame)
         {
@@ -143,6 +164,24 @@ namespace DSNServer.Handlers
             
         }
 
+        protected override void CheangeCasheData()
+        {
+            foreach (var pair in Cashe)
+            {
+                pair.Value.Ttl--;
+                if (pair.Value.Ttl <= 0)
+                {
+                    Cashe.TryRemove(pair.Key,out _ );
+                }
+            }
+        }
+
+        public override void SaveData()
+        {
+            string data = JsonConvert.SerializeObject(Cashe);
+            File.WriteAllText("NSQeury.json", data);
+        }
+
         private string DeleteDot(string name)
         {
             var newName = new StringBuilder();
@@ -151,7 +190,6 @@ namespace DSNServer.Handlers
                 if (name[i] != '.')
                     newName.Append(name[i]);
             }
-
             return newName.ToString();
         }
     }

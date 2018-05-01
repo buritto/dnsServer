@@ -21,6 +21,11 @@ namespace DSNServer
         
         private ushort[] availableTypes = {12, 2, 1};
 
+        public Record()
+        {
+            
+        }
+        
         public Record(byte[] data, int pointer, bool isQuestion = false)
         {
             var previousePointer = pointer;

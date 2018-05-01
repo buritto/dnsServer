@@ -7,7 +7,8 @@ namespace DSNServer
     {
         List<ISubscriber> MySubscribers { get; set; }
         void Notify(DNSFrame frame, EndPoint client);
-        void Subscribe(ISubscriber subscriber);
+        void Subscribe(params ISubscriber[] subscriber);
         void Unsubscribe(ISubscriber subscriber);
+        void CheangeDataCashe();
     }
 }

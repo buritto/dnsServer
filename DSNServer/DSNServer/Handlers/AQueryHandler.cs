@@ -1,21 +1,46 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using DSNServer.Converter;
+using Newtonsoft.Json;
 
 namespace DSNServer.Handlers
 {
+    public class CasheValue : ICashe
+    {
+        public long Ttl { get; set; }
+        public List<Record> Records;
+
+        public CasheValue(List<Record> records)
+        {
+            Records = records;
+            Ttl = Int64.MaxValue;
+            foreach (var record in records)
+            {
+                Ttl = Math.Min(Ttl, record.Ttl);
+            }
+        }
+    }
+    
     public class AQueryHandler : Handler
     {
-        public ConcurrentDictionary<string, List<Record>> Cache;
-        public AQueryHandler(Socket server) : base (server, 1)
+        
+        public ConcurrentDictionary<string, CasheValue> Cache;
+        private NSQueryHandler helper;
+        public AQueryHandler(Socket server, NSQueryHandler helper, 
+            ConcurrentDictionary<string, CasheValue> cashe = null) : base (server, 1)
         {
-            Cache = new ConcurrentDictionary<string, List<Record>>();
+            this.helper = helper;
+            Cache = GetCahseFromJsone<CasheValue>("AQeury.json")
+                    ?? new ConcurrentDictionary<string, CasheValue>();
         }
+
+        
 
         protected override async void ResolveQuestion(DNSFrame frame, EndPoint sender)
         {
@@ -24,13 +49,14 @@ namespace DSNServer.Handlers
             {
                 if (Cache.ContainsKey(record.Name))
                 {
-                    answers = Cache[record.Name];
+
+                    answers = Cache[record.Name].Records;
                     continue;
                 }
                 await RedirectQuestrionToMasterServer(frame);
                 if (!Cache.ContainsKey(record.Name))
                     return;
-                answers = Cache[record.Name];
+                answers = Cache[record.Name].Records;
             }
 
             SendResponse(frame, answers, sender);
@@ -62,6 +88,10 @@ namespace DSNServer.Handlers
         {
             foreach (var record in frame.Question.Records)
             {
+                if (frame.FrameHeader.AdditionalCount > 0 && frame.FrameHeader.NameServerCount > 0)
+                {
+                    helper.HelpResolveResponse(frame);
+                }
                 var dataForCache = new List<Record>();
                 foreach (var answerRecord in frame.Answer.Records)
                 {
@@ -73,13 +103,31 @@ namespace DSNServer.Handlers
 
                 if (!Cache.ContainsKey(record.Name))
                 {
-                    Cache.TryAdd(record.Name, dataForCache);
+                    Cache.TryAdd(record.Name, new CasheValue(dataForCache));
                 }
                 else
                 {
-                    Cache[record.Name] =  dataForCache;
+                    Cache[record.Name] =  new CasheValue(dataForCache);
                 }
             }
+        }
+
+        protected override void CheangeCasheData()
+        {
+            foreach (var pair in Cache)
+            {
+                pair.Value.Ttl--;
+                if (pair.Value.Ttl <= 0)
+                {
+                    Cache.TryRemove(pair.Key, out _);
+                }
+            }
+        }
+
+        public override void SaveData()
+        {
+            string data = JsonConvert.SerializeObject(Cache);
+            File.WriteAllText("AQeury.json", data);
         }
     }
 }

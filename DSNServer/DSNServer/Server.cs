@@ -7,6 +7,7 @@ namespace DSNServer
     public class Server : IPublisher
     {
         public Socket MainSocket;
+        private bool serverOn;
         public Server(string ipAddress)
         {
             var connected = new IPEndPoint(IPAddress.Parse(ipAddress), 53);
@@ -17,7 +18,8 @@ namespace DSNServer
 
         public void Listen()
         {
-            while (true)
+            serverOn = true;
+            while (serverOn)
             {
                 var buffer = new byte[1024];
                 EndPoint client = new IPEndPoint(IPAddress.None, 53);
@@ -29,20 +31,36 @@ namespace DSNServer
 
         public List<ISubscriber> MySubscribers { get; set; }
 
-
+        public void ServerTurnOff()
+        {
+            foreach (var subscriber in MySubscribers)
+            {
+                subscriber.SaveData();
+            }
+            serverOn = false;
+        }
+        
         public void Notify(DNSFrame frame, EndPoint client)
         {
             MySubscribers.ForEach(s => s.Updata(frame, client));
         }
 
-        public void Subscribe(ISubscriber subscriber)
+        public void Subscribe(params ISubscriber[] subscriber)
         {
-            MySubscribers.Add(subscriber);
+            MySubscribers.AddRange(subscriber);
         }
 
         public void Unsubscribe(ISubscriber subscriber)
         {
             MySubscribers.Remove(subscriber);
+        }
+
+        public void CheangeDataCashe()
+        {
+            foreach (var sub  in MySubscribers)
+            {
+                sub.CheangeCashe();
+            }
         }
     }
 }
